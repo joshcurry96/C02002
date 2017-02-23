@@ -31,9 +31,11 @@ public class financialCalculator extends Application{
 		double result = investment * power;
 		System.out.println(result);
 		return result;
+
 	}
 	
 	public double presentValue(TextField fv2, TextField ir2, TextField tp2){
+
 		double futureValue = Double.parseDouble(fv2.getText()); 
 		double interestRate = Double.parseDouble(ir2.getText());
 		double timePeriod = Double.parseDouble(tp2.getText());
@@ -44,7 +46,35 @@ public class financialCalculator extends Application{
 		System.out.println(result);
 		return result;
 	}
+
+	public double workingCapital(TextField wCA, TextField wCL){
+		double assets = Double.parseDouble(wCA.getText());
+		double liabilities = Double.parseDouble(wCL.getText());
+		double result = assets - liabilities;
+		return result;
+		
+	}
 	
+	public double currentRatio(TextField cRA, TextField cRL){
+		double assets = Double.parseDouble(cRA.getText());
+		double liabilites = Double.parseDouble(cRL.getText());
+		double result = assets / liabilites; 
+		return result;
+	}
+	
+	public double debtToEquity(TextField dTED, TextField dTEE){
+		double debt = Double.parseDouble(dTED.getText());
+		double equity = Double.parseDouble(dTEE.getText());
+		double result = debt / equity;
+		return result;
+	}
+	
+	public double grossProfitMargin(TextField gPMGP, TextField gPMR){
+		double grossProfit = Double.parseDouble(gPMGP.getText());
+		double revenue = Double.parseDouble(gPMR.getText());
+		double result = grossProfit / revenue;
+		return result;
+	}
 	
 	public Parent content(){
 		
@@ -69,10 +99,10 @@ public class financialCalculator extends Application{
 		
 		Button presentValue = new Button("Present Value");
 		
-		
-		Button futureValue = new Button("Future Value");
-		futureValue.setOnAction(event -> futureValue(initialInvestment, interestRate, timePeriod));
 		TextField futureValueResult = new TextField();
+		Button futureValue = new Button("Future Value");
+		futureValue.setOnAction(event -> futureValueResult.setText(Double.toString(futureValue(initialInvestment, interestRate, timePeriod))));
+		
 		buttons.getChildren().addAll(futureValue, futureValueResult);
 		
 		VBox input2 = new VBox(20);
@@ -84,7 +114,7 @@ public class financialCalculator extends Application{
 		
 		TextField timePeriod2 = new TextField("Please enter the time period");
 		
-		presentValue.setOnAction(event -> presentValue(futureValue2, interestRate2, timePeriod2));
+		
 		
 		Label label4 = new Label("Press the button to perform the calculation");
 		
@@ -93,6 +123,7 @@ public class financialCalculator extends Application{
 		HBox buttons2 = new HBox(10);
 		buttons2.setAlignment(Pos.CENTER);
 		TextField presentValueResult = new TextField();
+		presentValue.setOnAction(event -> presentValueResult.setText(Double.toString(presentValue(futureValue2, interestRate2, timePeriod2))));
 		buttons2.getChildren().addAll(presentValue, presentValueResult);
 		
 		
@@ -103,57 +134,83 @@ public class financialCalculator extends Application{
 
 		VBox tab1 = new VBox(10);
 		tab1.setPrefSize(500, 250);
-		tab1.getChildren().addAll(input, buttons,input2,buttons2, paneBack);
+		tab1.getChildren().addAll(input, buttons, input2,buttons2, paneBack);
 		return tab1;
 		
 				
 	}
 	
 	public Parent content2(){
-		Label label = new Label("Financial ratios");
-		VBox vBox1 = new VBox();
-		vBox1.setAlignment(Pos.CENTER);
-		vBox1.getChildren().add(label);
+		Label label = new Label("Working Capital Ratio");
+		Label label2 = new Label("Current Ratio");
+		Label label3 = new Label("Debt To Equity Ratio");
+		Label label4 = new Label("Gross Profit Margin");
 		
-		Label label2 = new Label("Please choose the ratio you desire");
+		TextField workingCapitalA = new TextField("Please enter the value of your Current Assets: ");
+		TextField workingCapitalL = new TextField("Please enter the value of your Current Liabilities: ");
+		TextField workingCapitalResult = new TextField();
+		TextField currentRatioA = new TextField("Please enter the value of your Current Assets: ");
+		TextField currentRatioL = new TextField("Please enter the value of your Current Liabilities: ");
+		TextField currentRatioResult = new TextField();
+		TextField debtToEquityD = new TextField("Please enter the value of your Total Debt: ");
+		TextField debtToEquityE = new TextField("Please enter the value of your Total Equity: ");
+		TextField debtToEquityResult = new TextField();
+		TextField grossProfitMarginGP = new TextField("Please enter the value of your Gross Profit: ");
+		TextField grossProfitMarginR = new TextField("Please enter the value of your Revenue: ");
+		TextField grossProfitMarginResult = new TextField();
 		
 		
-		VBox input = new VBox(20);
-		input.setAlignment(Pos.CENTER);
-		TextField ratio1 = new TextField("Enter number 1:");
-		TextField ratio2 = new TextField("Enter number 2:");
-		input.getChildren().addAll(ratio1, ratio2);
-		
-		VBox vBox2 = new VBox();
-		vBox2.setAlignment(Pos.CENTER);
-		vBox2.getChildren().add(label2);
-		
-		
-		HBox buttons1 = new HBox(10);
-		buttons1.setAlignment(Pos.CENTER);
-		HBox buttons2 = new HBox(10);
-		buttons2.setAlignment(Pos.CENTER);
-		
-		Button currentRatio = new Button("Current Ratio");
-		
+        Button currentRatio = new Button("Current Ratio");
 		Button workingCapital = new Button("Working Capital Ratio");
-		
 		Button debtToEquity = new Button("Debt To Equity Ratio");
-		
 		Button grossProfitMargin = new Button("Gross Profit Margin");
 		
-		buttons1.getChildren().addAll(currentRatio, workingCapital);
-		buttons2.getChildren().addAll(debtToEquity, grossProfitMargin);
 		
-		VBox paneBack = new VBox();
-	    paneBack.setAlignment(Pos.BOTTOM_LEFT);
+		
+		VBox vBox1 = new VBox(10);
+		vBox1.setAlignment(Pos.CENTER);
+		vBox1.getChildren().addAll(label,workingCapitalA,workingCapitalL);
+		
+		HBox hBox1 = new HBox(10);
+		hBox1.setAlignment(Pos.CENTER);
+		hBox1.getChildren().addAll(workingCapital, workingCapitalResult);
+		workingCapital.setOnAction(event -> workingCapitalResult.setText(Double.toString(workingCapital(workingCapitalA, workingCapitalL))));
+		
+		VBox vBox2 = new VBox(10);
+		vBox2.setAlignment(Pos.CENTER);
+		vBox2.getChildren().addAll(label2, currentRatioA,currentRatioL);
+		
+		HBox hBox2 = new HBox(10);
+		hBox2.setAlignment(Pos.CENTER);
+		hBox2.getChildren().addAll(currentRatio, currentRatioResult);
+		currentRatio.setOnAction(event -> currentRatioResult.setText(Double.toString(currentRatio(currentRatioA, currentRatioL))));
+		
+		VBox vBox3 = new VBox(10);
+		vBox3.setAlignment(Pos.CENTER);
+		vBox3.getChildren().addAll(label3, debtToEquityD, debtToEquityE);
+		
+		HBox hBox3 = new HBox(10);
+		hBox3.setAlignment(Pos.CENTER);
+		hBox3.getChildren().addAll(debtToEquity, debtToEquityResult);
+		debtToEquity.setOnAction(event -> debtToEquityResult.setText(Double.toString(debtToEquity(debtToEquityD, debtToEquityE))));
+		
+		VBox vBox4 = new VBox(10);
+		vBox4.setAlignment(Pos.CENTER);
+		vBox4.getChildren().addAll(label4, grossProfitMarginGP, grossProfitMarginR);
+		
+		HBox hBox4 = new HBox(10);
+		hBox4.setAlignment(Pos.CENTER);
+		hBox4.getChildren().addAll(grossProfitMargin, grossProfitMarginResult);
+		grossProfitMargin.setOnAction(event -> grossProfitMarginResult.setText(Double.toString(grossProfitMargin(grossProfitMarginGP, grossProfitMarginR))));
+		
+        Pane paneBack = new Pane();
 		Button back = new Button("Back");
 		paneBack.getChildren().add(back);
 		back.setOnAction(event -> back.getScene().setRoot(content3()));
 		
 		VBox tab2 = new VBox(10);
 		tab2.setPrefSize(500, 250);
-		tab2.getChildren().addAll(vBox1,input, vBox2, buttons1, buttons2, paneBack);
+		tab2.getChildren().addAll(vBox1,hBox1, vBox2, hBox2, vBox3,hBox3,vBox4,hBox4, paneBack);
 		return tab2;
 	}
 	
